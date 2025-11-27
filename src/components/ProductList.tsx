@@ -1,15 +1,24 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { Product } from '@/types/product';
 import ProductCard from './ProductCard';
-import { IoSearch, IoFilterOutline } from 'react-icons/io5';
+import { IoSearch, IoFilterOutline, IoRefresh } from 'react-icons/io5';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+
 
 interface ProductListProps {
   initialProducts: Product[];
 }
 
-const ProductList: React.FC<ProductListProps> = ({ initialProducts }) => {
+const ProductList = ({ initialProducts }: ProductListProps) => {
+
+  // HOok integration for infiinite scroll 
+  const { products, loading, hasMore, loadMore } = useInfiniteScroll(initialProducts)
+
+
+
+
   // State for search and category filters
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -47,6 +56,23 @@ const ProductList: React.FC<ProductListProps> = ({ initialProducts }) => {
     return resultProducts;
   }, [initialProducts, searchTerm, selectedCategory]);
 
+  // scroll  handler
+  const handleScroll = useCallback(() => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+
+    if (scrollTop + clientHeight >= scrollHeight - 200 && !loading && hasMore) {
+      loadMore();
+    }
+  }, [loading, hasMore, loadMore])
+
+  // For cleaning scroll listeneer
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
@@ -111,6 +137,19 @@ const ProductList: React.FC<ProductListProps> = ({ initialProducts }) => {
             {productsToDisplay.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+        )}
+        {loading && (
+          <div className="flex justify-center py-8">
+            {/* loading spinner using IoRefresh */}
+            <IoRefresh className="text-4xl text-indigo-500 animate-spin" />
+          </div>
+        )}
+
+        {/* Show message for no more products */}
+        {!hasMore && products.length > 0 && (
+          <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+            End of Products
           </div>
         )}
       </section>
