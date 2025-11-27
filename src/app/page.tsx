@@ -1,6 +1,7 @@
 import { getProducts } from '@/lib/api';
 import { Product } from '@/types/product';
 import ProductList from '@/components/ProductList';
+import CartSidebar from '@/components/CartSideBar';
 
 export default async function HomePage() {
   const products: Product[] = await getProducts();
@@ -17,7 +18,7 @@ export default async function HomePage() {
       <main className="container mx-auto p-4 pt-8">
         <ProductList initialProducts={products} />
       </main>
-
+      <CartSidebar />
     </div>
   );
 }
