@@ -42,7 +42,6 @@ export const useInfiniteScroll = (
     }
   }, [page, loading, hasMore]);
 
-  // TODO: useEffect here to listen for scroll events
 
   return {
     products,

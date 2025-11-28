@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { Product } from '@/types/product';
 import ProductCard from './ProductCard';
-import { IoSearch, IoFilterOutline, IoRefresh, IoClose } from 'react-icons/io5';
+import { IoSearch, IoFilterOutline, IoRefresh, IoClose, IoSwapVertical } from 'react-icons/io5';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 
@@ -24,7 +24,7 @@ const ProductList = ({ initialProducts }: ProductListProps) => {
   // State for search and category filters
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-
+  const [selectedSort, setSelectedSort] = useState('default');
   // UseMemo to find all unique category
   const uniqueCategories = useMemo(() => {
     // Use map and Set to quickly get a list of unique categories
@@ -53,8 +53,12 @@ const ProductList = ({ initialProducts }: ProductListProps) => {
         product.category === selectedCategory
       );
     }
+    if (selectedSort === 'price-low') {
+      return resultProducts.slice().sort((a, b) => a.price - b.price);
+    } else if (selectedSort === 'price-high') {
+      return resultProducts.slice().sort((a, b) => b.price - a.price);
+    }
 
-    // Return final list of all the products
     return resultProducts;
   }, [products, searchTerm, selectedCategory]);
 
@@ -131,8 +135,20 @@ const ProductList = ({ initialProducts }: ProductListProps) => {
         </div>
 
         {/* Sorting section */}
-        <div className="space-y-4">
-          <p className="text-gray-500 dark:text-gray-400">Sort Dropdown (TODO)</p>
+        <div className="mb-6">
+          <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <IoSwapVertical className="mr-2" />
+            Sort By
+          </label>
+          <select
+            value={selectedSort}
+            onChange={(e) => setSelectedSort(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-indigo-500 focus:border-indigo-500 capitalize"
+
+          >
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
         </div>
       </aside>
 
