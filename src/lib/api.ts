@@ -10,7 +10,7 @@ export const getProducts = async (page: number = 1): Promise<Product[]> => {
         page: page,
         limit: 10,
         inc: "id,title,images,thumbnail,price,category",
-        query: "watches",
+        // query: "watches",
       },
     });
 
