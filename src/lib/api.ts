@@ -1,23 +1,24 @@
 import axios from "axios";
 import { Product } from "@/types/product";
 
-const API_URL = "https://api.freeapi.app/api/v1/public/randomproducts";
+//Use dummyjson api
+const API_URL = "https://dummyjson.com/products";
+const LIMIT = 10;
 
 export const getProducts = async (page: number = 1): Promise<Product[]> => {
   try {
+    const skipAmount = (page - 1) * LIMIT;
+
     const response = await axios.get(API_URL, {
       params: {
-        page: page,
-        limit: 10,
-        inc: "id,title,images,thumbnail,price,category",
-        // query: "watches",
+        limit: LIMIT,
+        skip: skipAmount,
       },
     });
 
-    return response.data.data.data as Product[];
+    return response.data.products as Product[];
   } catch (error) {
     console.error("Error fetching products: ", error);
-
     return [];
   }
 };
