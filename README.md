@@ -32,6 +32,7 @@ assignment given by Nepasys PVT LTD.
 - React Context API
 - External API: [DummyJson](https://dummyjson.com/docs/products)
 (Had issue with image not laoding with the provided [URL](https://freeapi.hashnode.space/api-guide/apireference/getProducts) )
+- Deployed to [Vercel](https://product-listing-app-eight-zeta.vercel.app/)
 
 ## Setup
 
