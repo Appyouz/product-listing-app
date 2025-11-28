@@ -1,5 +1,17 @@
 # Product Listing Web Application
 
+<table width="100%">
+  <tr>
+    <td align="center" width="33%">
+      <img src="https://raw.githubusercontent.com/Appyouz/product-listing-app/refs/heads/main/assets/product-pc.png" width="90%" alt="Screenshot of the AbaTask todo list"/>
+      <br>
+     <b> Product List</b>
+    </td>
+  </tr>
+</table>
+
+---
+
 A simple product listing page built with Next.js and Tailwind CSS in response to
 assignment given by Nepasys PVT LTD.
 
